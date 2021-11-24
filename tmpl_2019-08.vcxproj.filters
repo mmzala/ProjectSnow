@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="surface.cpp">
+      <Filter>template code</Filter>
+    </ClCompile>
+    <ClCompile Include="template.cpp">
+      <Filter>template code</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>gameobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>gameobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>map system</Filter>
+    </ClCompile>
+    <ClCompile Include="MapManager.cpp">
+      <Filter>map system</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>gameobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemManager.cpp">
+      <Filter>gameobject components</Filter>
+    </ClCompile>
+    <ClCompile Include="Canvas.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="TextWriter.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="game.h" />
+    <ClInclude Include="surface.h">
+      <Filter>template code</Filter>
+    </ClInclude>
+    <ClInclude Include="template.h">
+      <Filter>template code</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>gameobjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>gameobjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>map system</Filter>
+    </ClInclude>
+    <ClInclude Include="MapManager.h">
+      <Filter>map system</Filter>
+    </ClInclude>
+    <ClInclude Include="MathUtils.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>gameobject components</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>gameobjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemManager.h">
+      <Filter>gameobject components</Filter>
+    </ClInclude>
+    <ClInclude Include="Canvas.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="TextWriter.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="template code">
+      <UniqueIdentifier>{bf32dd6e-4be7-4889-8ac6-49e7ee163c40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gameobjects">
+      <UniqueIdentifier>{2dcee18a-0dcd-474d-896d-63015a24ef6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{0b297c7f-c01d-44ab-bff4-2adccfcee68d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="map system">
+      <UniqueIdentifier>{212a3ffe-5712-4898-9980-13d6cec85680}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gameobject components">
+      <UniqueIdentifier>{c1a8e97f-ab1e-465d-aa20-70aac16a5801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{2b3541ae-636d-4647-ab2e-c95c273e2134}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="_readme.txt">
+      <Filter>template code</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
