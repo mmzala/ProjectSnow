@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 class UIText;
+class Item;
 class Canvas
 {
 public:
@@ -14,6 +15,7 @@ public:
 	static void NextState();
 	static int GetCurrentState();
 	static void SetRenderer(SDL_Renderer* newRenderer);
+	static void SetItem(Item* item);
 
 private:
 	// Disallow creating an instance of this object
@@ -34,11 +36,12 @@ private:
 	static State states[3];
 	static int currentState;
 
-	static Tmpl8::Sprite ItemBackground;
+	static Tmpl8::Sprite itemBackground;
+	static Item* item;
 
 	static UIText* scoreText;
 	static UIText* startText;
-
+	
 	static Tmpl8::Surface* screen;
 	static SDL_Renderer* renderer;
 };

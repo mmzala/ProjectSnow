@@ -8,7 +8,6 @@ class ItemManager
 public:
 	ItemManager(char* sprites[3], Tmpl8::Surface* screen);
 	~ItemManager();
-	void Tick(float deltaTime);
 	bool UseItem(int tileType);
 	void SwapItem(int item);
 

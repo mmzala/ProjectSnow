@@ -343,7 +343,7 @@ int main( int argc, char **argv )
 	#else
 		void* target = 0;
 		int pitch;
-		Canvas::RenderSprites(); // Render UI sprites before rendering frameBuffer texture
+		Canvas::RenderSprites(); // Render UI sprites before copying frameBuffer texture
 		SDL_LockTexture( frameBuffer, NULL, &target, &pitch );
 		if (pitch == (surface->GetWidth() * 4))
 		{

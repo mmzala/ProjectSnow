@@ -19,12 +19,6 @@ Player::~Player()
 	delete itemManager;
 }
 
-void Player::Tick(float deltaTime)
-{
-	RenderSprite();
-	itemManager->Tick(deltaTime);
-}
-
 // Given direction should be relative to the map (map is generated from top to bottom), so up is -1 and down is 1
 void Player::Move(Vector2 direction)
 {

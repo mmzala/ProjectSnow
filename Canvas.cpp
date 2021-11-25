@@ -1,6 +1,7 @@
 #include "Canvas.h"
 #include "UIText.h"
 #include "Vector.h"
+#include "Item.h"
 #include <SDL_ttf.h>
 #include <assert.h> // assert
 #include <cstdio> //printf
@@ -11,7 +12,8 @@ int Canvas::currentState = 0;
 Tmpl8::Surface* Canvas::screen = nullptr;
 SDL_Renderer* Canvas::renderer = nullptr;
 
-Tmpl8::Sprite Canvas::ItemBackground = Tmpl8::Sprite(new Tmpl8::Surface("assets/panelInset_blue.png"), 1);
+Tmpl8::Sprite Canvas::itemBackground = Tmpl8::Sprite(new Tmpl8::Surface("assets/panelInset_blue.png"), 1);
+Item* Canvas::item = nullptr;
 
 UIText* Canvas::scoreText = nullptr;
 UIText* Canvas::startText = nullptr;
@@ -47,7 +49,9 @@ void Canvas::Tick()
 
 void Canvas::RenderSprites()
 {
-	ItemBackground.DrawScaled(5, 5, 100, 100, screen);
+	itemBackground.DrawScaled(5, 5, 80, 80, screen);
+	// Item is set on the second frame, so this can't run on the first frame
+	if(item) item->Tick(0.f); // Item doesn't need deltaTime
 }
 
 void Canvas::NextState()
@@ -88,7 +92,7 @@ void Canvas::InitStartText()
 void Canvas::InitScoreText()
 {
 	Vector2 position;
-	position.x = 120;
+	position.x = 100;
 	position.y = 10;
 	// Black
 	SDL_Color color = { 0, 0, 0, 255 };
@@ -105,4 +109,9 @@ int Canvas::GetCurrentState()
 void Canvas::SetRenderer(SDL_Renderer* newRenderer)
 {
 	renderer = newRenderer;
+}
+
+void Canvas::SetItem(Item* newItem)
+{
+	item = newItem;
 }

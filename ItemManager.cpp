@@ -1,6 +1,7 @@
 #include "ItemManager.h"
 #include "Item.h"
 #include "Player.h"
+#include "Canvas.h"
 #include <assert.h> // assert
 
 ItemManager::ItemManager(char* sprites[3], Tmpl8::Surface* screen)
@@ -12,6 +13,8 @@ ItemManager::ItemManager(char* sprites[3], Tmpl8::Surface* screen)
 	{
 		items[i] = new Item(sprites[i], i, screen);
 	}
+
+	Canvas::SetItem(items[holdingItem]);
 }
 
 ItemManager::~ItemManager()
@@ -20,11 +23,6 @@ ItemManager::~ItemManager()
 	{
 		delete items[i];
 	}
-}
-
-void ItemManager::Tick(float deltaTime)
-{
-	items[holdingItem]->Tick(deltaTime);
 }
 
 bool ItemManager::UseItem(int tileType)
@@ -37,4 +35,5 @@ void ItemManager::SwapItem(int item)
 	// There are only 3 items
 	assert(item <= 3);
 	holdingItem = item;
+	Canvas::SetItem(items[holdingItem]);
 }
