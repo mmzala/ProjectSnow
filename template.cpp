@@ -15,6 +15,8 @@
 
 #include "game.h"
 
+#include "Canvas.h" // Canvas needs pointer to SDL_Renderer
+
 #include <fcntl.h>
 #include <io.h>
 #include "template.h"
@@ -329,6 +331,8 @@ int main( int argc, char **argv )
 	int exitapp = 0;
 	game = new Game();
 	game->SetTarget( surface );
+	Canvas::SetRenderer(renderer); // Canvas needs pointer to redenerer to render text
+	Canvas::Init(surface);
 	timer t;
 	t.reset();
 	while (!exitapp) 
@@ -339,6 +343,7 @@ int main( int argc, char **argv )
 	#else
 		void* target = 0;
 		int pitch;
+		Canvas::RenderSprites(); // Render UI sprites before rendering frameBuffer texture
 		SDL_LockTexture( frameBuffer, NULL, &target, &pitch );
 		if (pitch == (surface->GetWidth() * 4))
 		{
@@ -355,6 +360,7 @@ int main( int argc, char **argv )
 		}
 		SDL_UnlockTexture( frameBuffer );
 		SDL_RenderCopy( renderer, frameBuffer, NULL, NULL );
+		Canvas::Tick(); // Render UI
 		SDL_RenderPresent( renderer );
 	#endif
 		if (firstframe)
@@ -402,6 +408,7 @@ int main( int argc, char **argv )
 			}
 		}
 	}
+	Canvas::ShutDown();
 	game->Shutdown();
 	SDL_Quit();
 	return 0;

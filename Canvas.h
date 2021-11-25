@@ -1,14 +1,19 @@
 #pragma once
 
 #include "surface.h"
+#include <SDL.h>
 
+class UIText;
 class Canvas
 {
 public:
 	static void Init(Tmpl8::Surface* screenSurface);
+	static void ShutDown();
 	static void Tick();
+	static void RenderSprites();
 	static void NextState();
 	static int GetCurrentState();
+	static void SetRenderer(SDL_Renderer* newRenderer);
 
 private:
 	// Disallow creating an instance of this object
@@ -18,12 +23,23 @@ private:
 	static void RunState();
 	static void EndState();
 
-private:
-	static Tmpl8::Surface* screen;
+	// Text initialization
+	static void InitStartText();
+	static void InitScoreText();
 
+private:
+	
 	// Array of function pointers
 	typedef void(*State)();
 	static State states[3];
 	static int currentState;
+
+	static Tmpl8::Sprite ItemBackground;
+
+	static UIText* scoreText;
+	static UIText* startText;
+
+	static Tmpl8::Surface* screen;
+	static SDL_Renderer* renderer;
 };
 

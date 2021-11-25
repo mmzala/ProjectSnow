@@ -29,7 +29,7 @@
     <ClCompile Include="Canvas.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="TextWriter.cpp">
+    <ClCompile Include="UIText.cpp">
       <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,7 +71,7 @@
     <ClInclude Include="Canvas.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="TextWriter.h">
+    <ClInclude Include="UIText.h">
       <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>

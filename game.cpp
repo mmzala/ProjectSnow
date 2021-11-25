@@ -30,8 +30,6 @@ namespace Tmpl8
 		player->transform.scale = Vector2(0.7, 0.7);
 		player->mapPosition = startingMap->FindHoleFromEnd(5, 3);
 		player->SwapMap(startingMap);
-
-		Canvas::Init(screen);
 	}
 	
 	// -----------------------------------------------------------
@@ -53,7 +51,7 @@ namespace Tmpl8
 		
 		mapManager->Tick();
 		player->Tick(deltaTime);
-		Canvas::Tick();
+		
 
 		screen->Line(player->transform.position.x + 35, player->transform.position.y + 35, mousePosition.x, mousePosition.y, 0xffffff);
 	}

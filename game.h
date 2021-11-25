@@ -20,8 +20,7 @@ public:
 
 private:
 	Surface* screen;
-
-	Vector2 mousePosition; // Forward declare vector2 ???
+	Vector2 mousePosition;
 };
 
 }; // namespace Tmpl8
