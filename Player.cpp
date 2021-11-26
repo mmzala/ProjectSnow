@@ -19,7 +19,7 @@ Player::Player(char* sprite, char* itemSprites[3], Map* startingMap, Tmpl8::Surf
 
 Player::~Player()
 {
-	// currentMap pointer will be deleted by MapManager class
+	// Map pointers will be deleted by MapManager class
 	delete itemManager;
 }
 
@@ -34,14 +34,16 @@ void Player::Move(Vector2 direction)
 	{
 		if (!TransitionMapsUp()) return;
 	}
-	if (mapPosition.y == currentMap->sizeY - 1 && direction.y == 1)
+	else if (mapPosition.y == currentMap->sizeY - 1 && direction.y == 1)
 	{
 		if (!TransitionMapsDown()) return;
 	}
-
-	// Make sure the player can't move on full tiles
-	if (!currentMap->IsTileClear(mapPosition + direction)) return;
-
+	else
+	{
+		// Make sure the player can't move on full tiles (this is already done in transition methods)
+		if (!currentMap->IsTileClear(mapPosition + direction)) return;
+	}
+	
 	mapPosition += direction;
 	// Clip x coordinate to make sure player doesn't go out of the map
 	mapPosition.x = MathUtils::clip(mapPosition.x, 1.f, 10.f);
@@ -63,11 +65,15 @@ void Player::UseItem(Vector2 mousePosition)
 	// Make sure the player can't clear tiles that are in the corners by keeping only the longest part of the vector
 	std::abs(dir.x) <= std::abs(dir.y) ? dir.x = 0.f : dir.y = 0.f;
 
+	// Check what map the player want's to break a tile in
 	Vector2 tilePosition(dir + mapPosition);
-	int tileType = currentMap->GetTileIndex(tilePosition.x, tilePosition.y);
+	Map* map = GetMapBasedOnDir(dir);
+	int tileType = GetTileIndexOfMap(map, tilePosition);
+
+	printf("%i", tileType);
 	if (itemManager->UseItem(tileType))
 	{
-		currentMap->ClearTile(mapPosition.x + dir.x, mapPosition.y + dir.y);
+		map->ClearTile(tilePosition.x, tilePosition.y);
 	}
 }
 
@@ -93,10 +99,13 @@ bool Player::TransitionMapsUp()
 
 	previousMap = currentMap;
 	currentMap = nextMap;
+	nextMap = nullptr;
+
+	// Set current mapPosition relative to next map
 	nextPosition.y += 1;
 	mapPosition = nextPosition;
 
-	printf("next");
+	printf("trans next map\n");
 }
 
 bool Player::TransitionMapsDown()
@@ -106,8 +115,47 @@ bool Player::TransitionMapsDown()
 
 	nextMap = currentMap;
 	currentMap = previousMap;
+	previousMap = nullptr;
+
+	// Set current mapPosition relative to next map
 	nextPosition.y -= 1;
 	mapPosition = nextPosition;
 
-	printf("previous");
+	printf("trans previous map\n");
+}
+
+// Returns map based on given direction and mapPosition
+Map* Player::GetMapBasedOnDir(Vector2 direction)
+{
+	// Up
+	if (mapPosition.y == 0 && direction.y == -1)
+	{
+		return nextMap;
+	}
+	// Down
+	else if (mapPosition.y == currentMap->sizeY - 1 && direction.y == 1)
+	{
+		return previousMap;
+	}
+	
+	return currentMap;
+}
+
+// Gets tile index inside a specific map and updates map position so it's relative to the used map
+int Player::GetTileIndexOfMap(Map* map, Vector2& position)
+{
+	// Can't use siwtch with pointers, casting to intptr_t could work, but this only
+	// works assuming sizeof(int) == sizeof(ptr) on the target platform, that's not always the case
+	if (map == nextMap)
+	{
+		position = Vector2(position.x, nextMap->sizeY - 1);
+		return nextMap->GetTileIndex((int)position.x, (int)position.y);
+	}
+	else if (map == previousMap)
+	{
+		position = Vector2(position.x, 0);
+		return previousMap->GetTileIndex((int)position.x, (int)position.y);
+	}
+
+	return currentMap->GetTileIndex((int)position.x, (int)position.y);
 }

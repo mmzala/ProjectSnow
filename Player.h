@@ -22,6 +22,8 @@ public:
 private:
 	bool TransitionMapsUp();
 	bool TransitionMapsDown();
+	Map* GetMapBasedOnDir(Vector2 direction);
+	int GetTileIndexOfMap(Map* map, Vector2& position);
 
 private:
 	Map* previousMap;
