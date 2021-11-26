@@ -15,21 +15,16 @@ namespace Tmpl8
 
 	Player* player;
 	MapManager* mapManager;
-	//Canvas* CanvasUI;
 
 	// -----------------------------------------------------------
 	// Initialize the application
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
-		player = new Player("assets/p3_stand.png", items, screen);
-		mapManager = new MapManager(backgroundTiles, obstacleTiles, player, screen);
-
-		// Initialize some values
-		Map* startingMap = mapManager->GetMap(1);
-		player->transform.scale = Vector2(0.7, 0.7);
-		player->mapPosition = startingMap->FindHoleFromEnd(5, 3);
-		player->SwapMap(startingMap);
+		mapManager = new MapManager(backgroundTiles, obstacleTiles, screen);
+		player = new Player("assets/p3_stand.png", items, mapManager->GetMap(1), screen);
+		mapManager->SetPlayer(player);
+		player->SetNextMap(mapManager->GetNextObstacleMap());
 	}
 	
 	// -----------------------------------------------------------

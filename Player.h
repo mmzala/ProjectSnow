@@ -7,18 +7,25 @@ class ItemManager;
 class Player : public GameObject
 {
 public:
-	Player(char* sprite, char* itemSprites[3], Tmpl8::Surface* screen);
+	Player(char* sprite, char* itemSprites[3], Map* startingMap, Tmpl8::Surface* screen);
 	~Player();
 	void Move(Vector2 direction);
 	void UseItem(Vector2 mousePosition);
 	void SwapItem(int item);
-	void SwapMap(Map* map);
+	void RecalculatePosition();
+	void SetNextMap(Map* map);
 
 public:
 	// Position on map
 	Vector2 mapPosition;
 
 private:
+	bool TransitionMapsUp();
+	bool TransitionMapsDown();
+
+private:
+	Map* previousMap;
 	Map* currentMap;
+	Map* nextMap;
 	ItemManager* itemManager;
 };

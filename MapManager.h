@@ -10,11 +10,16 @@ class Player;
 class MapManager
 {
 public:
-	MapManager(std::vector<char*> backgroundTiles, std::vector<char*> obstaclesTiles, Player* player, Tmpl8::Surface* screen);
+	MapManager(std::vector<char*> backgroundTiles, std::vector<char*> obstaclesTiles, Tmpl8::Surface* screen);
 	~MapManager();
 	void Tick();
 	void AddPositionOffset(Vector2 offset);
 	Map* GetMap(int index);
+	Map* GetNextObstacleMap();
+	void SetPlayer(Player* player);
+
+private:
+	void CreateNextMaps();
 
 private:
 	std::vector<Map*> maps;

@@ -6,12 +6,16 @@
 #include <cmath> // round / abs
 #include <cstdio> //printf
 
-Player::Player(char* sprite, char* itemSprites[3], Tmpl8::Surface* screen)
+Player::Player(char* sprite, char* itemSprites[3], Map* startingMap, Tmpl8::Surface* screen)
 	: GameObject(sprite, screen),
-	currentMap(nullptr),
-	mapPosition(),
+	previousMap(nullptr),
+	currentMap(startingMap),
+	nextMap(nullptr),
+	mapPosition(startingMap->FindHoleFromEnd(5, 3)),
 	itemManager(new ItemManager(itemSprites, screen))
-{}
+{
+	transform.scale = Vector2(0.7, 0.7);
+}
 
 Player::~Player()
 {
@@ -24,6 +28,16 @@ void Player::Move(Vector2 direction)
 {
 	// If Canvas is in starting state, then go to next state (this should only happen when player moves for the first time)
 	if (Canvas::GetCurrentState() < 1) Canvas::NextState();
+
+	// If standing at the top or bottom of currentMap, try to transition maps
+	if (mapPosition.y == 0 && direction.y == -1)
+	{
+		if (!TransitionMapsUp()) return;
+	}
+	if (mapPosition.y == currentMap->sizeY - 1 && direction.y == 1)
+	{
+		if (!TransitionMapsDown()) return;
+	}
 
 	// Make sure the player can't move on full tiles
 	if (!currentMap->IsTileClear(mapPosition + direction)) return;
@@ -57,13 +71,43 @@ void Player::UseItem(Vector2 mousePosition)
 	}
 }
 
+void Player::RecalculatePosition()
+{
+	transform.position = currentMap->GetTilePosition(mapPosition.x, mapPosition.y);
+}
+
 void Player::SwapItem(int item)
 {
 	itemManager->SwapItem(item);
 }
 
-void Player::SwapMap(Map* map)
+void Player::SetNextMap(Map* map)
 {
-	currentMap = map;
-	transform.position = currentMap->GetTilePosition(mapPosition.x, mapPosition.y);
+	nextMap = map;
+}
+
+bool Player::TransitionMapsUp()
+{
+	Vector2 nextPosition(mapPosition.x, nextMap->sizeY - 1);
+	if (!nextMap->IsTileClear(nextPosition)) return false;
+
+	previousMap = currentMap;
+	currentMap = nextMap;
+	nextPosition.y += 1;
+	mapPosition = nextPosition;
+
+	printf("next");
+}
+
+bool Player::TransitionMapsDown()
+{
+	Vector2 nextPosition(mapPosition.x, 0);
+	if (!previousMap->IsTileClear(nextPosition)) return false;
+
+	nextMap = currentMap;
+	currentMap = previousMap;
+	nextPosition.y -= 1;
+	mapPosition = nextPosition;
+
+	printf("previous");
 }

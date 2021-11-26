@@ -5,15 +5,14 @@
 
 // TODO: Make row/column variables more understandable (x, y coordinates)
 
-Map::Map(std::vector<char*> spriteFiles, bool shouldIncludeHoles, Tmpl8::Surface* screen)
+Map::Map(std::vector<char*> spriteFiles, bool shouldIncludeHoles, float posOffsetY, Tmpl8::Surface* screen)
 	:
-	positionOffset(),
+	positionOffset(0.f, posOffsetY),
 	shouldIncludeHoles(shouldIncludeHoles),
 	screen(screen)
 {
 	// Calculate positionOffset, so that the map fills the whole window (tiles are 70x70)
-	//positionOffset.x = screen->GetWidth() / 70;
-	//positionOffset.y = screen->GetHeight() / 70;
+
 
 	// Create all sprites and push it into the vector
 	tiles.reserve(spriteFiles.size());

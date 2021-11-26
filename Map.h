@@ -14,7 +14,7 @@ namespace Tmpl8 {
 class Map
 {
 public:
-	Map(std::vector<char*> spriteFiles, bool shouldIncludeHoles, Tmpl8::Surface* screen);
+	Map(std::vector<char*> spriteFiles, bool shouldIncludeHoles, float posOffsetY, Tmpl8::Surface* screen);
 	~Map();
 	void DrawMap();
 	Vector2 GetTilePosition(int row, int column);
