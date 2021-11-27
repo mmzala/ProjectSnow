@@ -11,8 +11,6 @@ UIText::UIText(Vector2 position, char* text, char* font, int fontSize, SDL_Color
 {
 	this->position.x = position.x;
 	this->position.y = position.y;
-	this->position.w = 100;
-	this->position.h = 100;
 	CreateText();
 }
 
@@ -41,4 +39,10 @@ void UIText::CreateText()
 	texture = SDL_CreateTextureFromSurface(renderer, surface);
 	SDL_FreeSurface(surface);
 	SDL_QueryTexture(texture, nullptr, nullptr, &this->position.w, &this->position.h);
+}
+
+void UIText::SetPosition(Vector2 position)
+{
+	this->position.x = position.x;
+	this->position.y = position.y;
 }

@@ -14,6 +14,7 @@ public:
 	static void RenderSprites();
 	static void NextState();
 	static int GetCurrentState();
+	static void SetScoreText(int amount);
 	static void SetRenderer(SDL_Renderer* newRenderer);
 	static void SetItem(Item* item);
 
@@ -26,7 +27,7 @@ private:
 	static void EndState();
 
 	// Text initialization
-	static void InitStartText();
+	static void InithintText();
 	static void InitScoreText();
 
 private:
@@ -39,8 +40,8 @@ private:
 	static Tmpl8::Sprite itemBackground;
 	static Item* item;
 
+	static UIText* hintText;
 	static UIText* scoreText;
-	static UIText* startText;
 	
 	static Tmpl8::Surface* screen;
 	static SDL_Renderer* renderer;

@@ -11,8 +11,8 @@
 namespace Tmpl8
 {
 	std::vector<char*> backgroundTiles = { "assets/castleCenter.png" };
-	std::vector<char*> obstacleTiles = { "assets/iceWaterDeep.png", "assets/stoneCenter.png" ,"assets/tundraCenter.png" };
-	char* items[3] = { "assets/Axe.png", "assets/Pickaxe.png", "assets/Shovel.png" };
+	std::vector<char*> obstacleTiles = { "assets/stoneCenter.png", "assets/iceWaterDeep.png", "assets/tundraCenter.png" };
+	char* items[3] = { "assets/Pickaxe.png", "assets/Axe.png", "assets/Shovel.png" };
 
 	Player* player;
 	MapManager* mapManager;

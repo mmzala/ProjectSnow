@@ -20,7 +20,8 @@ Player::Player(char* sprite, char* itemSprites[3], MapManager* mapManager, Magma
 	itemManager(new ItemManager(itemSprites, screen)),
 	magma(magma),
 	scrollTreshhold(150),
-	isDead(false)
+	isDead(false),
+	points(0)
 {
 	transform.scale = Vector2(0.7, 0.7);
 	CalculatePosition();
@@ -48,7 +49,7 @@ void Player::Tick(float deltaTime)
 // Given direction should be relative to the map (map is generated from top to bottom), so up is -1 and down is 1
 void Player::Move(Vector2 direction)
 {
-	// If Canvas is in starting state, then go to next state (this should only happen when player moves for the first time)
+	// If Canvas is in starting state, then go to next state (this should only happen when player moves/uses item for the first time)
 	if (Canvas::GetCurrentState() < 1) Canvas::NextState();
 
 	// If standing at the top or bottom of currentMap, try to transition maps
@@ -66,6 +67,7 @@ void Player::Move(Vector2 direction)
 		if (!currentMap->IsTileClear(mapPosition + direction)) return;
 	}
 	
+	AddPoints(-direction.y);
 	mapPosition += direction;
 	// Clip x coordinate to make sure player doesn't go out of the map
 	mapPosition.x = MathUtils::clip(mapPosition.x, 1.f, 10.f);
@@ -96,7 +98,11 @@ void Player::UseItem(Vector2 mousePosition)
 
 	if (itemManager->UseItem(tileType))
 	{
+		// If Canvas is in starting state, then go to next state (this should only happen when player moves/uses item for the first time)
+		if (Canvas::GetCurrentState() < 1) Canvas::NextState();
+
 		map->ClearTile(tilePosition.x, tilePosition.y);
+		AddPoints(tileType);
 	}
 }
 
@@ -158,6 +164,15 @@ void Player::CheckForScrolling()
 		mapManager->MoveMaps(-70);
 		magma->MoveDown(70);
 	}
+}
+
+void Player::AddPoints(int amount)
+{
+	//  If points don't change, just return to not change text
+	if (amount == 0) return;
+
+	points += amount;
+	Canvas::SetScoreText(points);
 }
 
 // Returns map based on given direction and mapPosition

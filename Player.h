@@ -29,6 +29,7 @@ private:
 	bool TransitionMapsUp();
 	bool TransitionMapsDown();
 	void CheckForScrolling();
+	void AddPoints(int amount);
 	Map* GetMapBasedOnDir(Vector2 direction);
 	int GetTileIndexOfMap(Map* map, Vector2& position);
 
@@ -43,4 +44,5 @@ private:
 	// Determines when to move the maps and magma
 	float scrollTreshhold;
 	bool isDead;
+	int points;
 };

@@ -11,9 +11,7 @@ public:
 	void Draw();
 	void SetText(char* text);
 	void CreateText();
-
-public:
-	SDL_Rect position;
+	void SetPosition(Vector2 position);
 
 private:
 	TTF_Font* font;
@@ -21,5 +19,6 @@ private:
 	SDL_Color color;
 	SDL_Texture* texture;
 	SDL_Renderer* renderer;
+	SDL_Rect position;
 };
 
