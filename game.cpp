@@ -3,6 +3,7 @@
 #include "MapManager.h"
 #include "Map.h"
 #include "Player.h"
+#include "Magma.h"
 #include "Canvas.h"
 #include <cstdio> //printf
 #include <vector> // vector array
@@ -15,6 +16,7 @@ namespace Tmpl8
 
 	Player* player;
 	MapManager* mapManager;
+	Magma* magma;
 
 	// -----------------------------------------------------------
 	// Initialize the application
@@ -22,7 +24,8 @@ namespace Tmpl8
 	void Game::Init()
 	{
 		mapManager = new MapManager(backgroundTiles, obstacleTiles, screen);
-		player = new Player("assets/p3_stand.png", items, mapManager, screen);
+		magma = new Magma("assets/liquidLavaTop_mid.png", "assets/liquidLava.png", screen);
+		player = new Player("assets/p3_stand.png", items, mapManager, magma, screen);
 		mapManager->SetPlayer(player);
 		player->SetNextMap(mapManager->GetNextObstacleMap());
 	}
@@ -32,8 +35,9 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Shutdown()
 	{
-		delete mapManager;
 		delete player;
+		delete magma;
+		delete mapManager;
 	}
 
 	// -----------------------------------------------------------
@@ -46,13 +50,15 @@ namespace Tmpl8
 		
 		mapManager->Tick();
 		player->Tick(deltaTime);
+		magma->Tick(deltaTime);
 
-		screen->Line(player->transform.position.x + 35, player->transform.position.y + 35, mousePosition.x, mousePosition.y, 0xffffff);
+		//screen->Line(player->transform.position.x + 35, player->transform.position.y + 35, mousePosition.x, mousePosition.y, 0xffffff);
 	}
 
 	void Game::MouseDown(int button)
 	{
 		//printf("%i\n", button);
+		if (player->IsDead()) return;
 
 		switch (button)
 		{
@@ -72,6 +78,10 @@ namespace Tmpl8
 	void Game::KeyDown(int key)
 	{
 		//printf("%i\n", key);
+		if (player->IsDead())
+		{
+			return;
+		}
 
 		switch (key)
 		{

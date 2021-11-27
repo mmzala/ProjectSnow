@@ -14,6 +14,7 @@ public:
 	~MapManager();
 	void Tick();
 	void AddPositionOffset(Vector2 offset);
+	void MoveMaps(float y);
 	Map* GetMap(int index);
 	Map* GetNextObstacleMap();
 	void SetPlayer(Player* player);
@@ -27,7 +28,6 @@ private:
 	std::vector<char*> backgroundTiles;
 	std::vector<char*> obstaclesTiles;
 	Player* player;
-
 	Tmpl8::Surface* screen;
 };
 

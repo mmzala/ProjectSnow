@@ -3,20 +3,24 @@
 #include "MapManager.h"
 #include "MathUtils.h"
 #include "ItemManager.h"
+#include "Magma.h"
 #include "Canvas.h"
 #include <cmath> // round / abs
 #include <cstdio> // printf
 
 // TODO: GetTileIndexOfMap() to MapManager, get player mapmanager pointer, and refactor previousMap, currentMap and nextMap system that works with mapManager
 
-Player::Player(char* sprite, char* itemSprites[3], MapManager* mapManager, Tmpl8::Surface* screen)
+Player::Player(char* sprite, char* itemSprites[3], MapManager* mapManager, Magma* magma, Tmpl8::Surface* screen)
 	: GameObject(sprite, screen),
 	mapManager(mapManager),
 	previousMap(nullptr),
 	currentMap(mapManager->GetMap(1)),
 	nextMap(nullptr),
 	mapPosition(mapManager->GetMap(1)->FindHoleFromEnd(5, 3)),
-	itemManager(new ItemManager(itemSprites, screen))
+	itemManager(new ItemManager(itemSprites, screen)),
+	magma(magma),
+	scrollTreshhold(150),
+	isDead(false)
 {
 	transform.scale = Vector2(0.7, 0.7);
 	CalculatePosition();
@@ -24,8 +28,21 @@ Player::Player(char* sprite, char* itemSprites[3], MapManager* mapManager, Tmpl8
 
 Player::~Player()
 {
-	// Map pointers will be deleted by MapManager class
 	delete itemManager;
+}
+
+void Player::Tick(float deltaTime)
+{
+	// Check if player touched magma
+	if (magma->transform.position.y < transform.position.y)
+	{
+		isDead = true;
+
+		// If canvas isn't in the last state, then go to the last state
+		if(Canvas::GetCurrentState() < 2)Canvas::NextState();
+	}
+
+	RenderSprite();
 }
 
 // Given direction should be relative to the map (map is generated from top to bottom), so up is -1 and down is 1
@@ -52,6 +69,8 @@ void Player::Move(Vector2 direction)
 	mapPosition += direction;
 	// Clip x coordinate to make sure player doesn't go out of the map
 	mapPosition.x = MathUtils::clip(mapPosition.x, 1.f, 10.f);
+
+	CheckForScrolling();
 	transform.position = currentMap->GetTilePosition(mapPosition.x, mapPosition.y);
 }
 
@@ -110,6 +129,7 @@ bool Player::TransitionMapsUp()
 	mapPosition = nextPosition;
 
 	printf("trans next map\n");
+	return true;
 }
 
 bool Player::TransitionMapsDown()
@@ -126,6 +146,18 @@ bool Player::TransitionMapsDown()
 	mapPosition = nextPosition;
 
 	printf("trans previous map\n");
+	return true;
+}
+
+void Player::CheckForScrolling()
+{
+	Vector2 tilePosition = currentMap->GetTilePosition(mapPosition.x, mapPosition.y);
+	// If player is high enough scroll the maps and move the magma back
+	if (tilePosition.y < scrollTreshhold)
+	{
+		mapManager->MoveMaps(-70);
+		magma->MoveDown(70);
+	}
 }
 
 // Returns map based on given direction and mapPosition
@@ -172,4 +204,9 @@ Map* Player::GetCurrentMap()
 Map* Player::GetPreviousMap()
 {
 	return previousMap;
+}
+
+bool Player::IsDead()
+{
+	return isDead;
 }

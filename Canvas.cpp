@@ -15,8 +15,8 @@ SDL_Renderer* Canvas::renderer = nullptr;
 Tmpl8::Sprite Canvas::itemBackground = Tmpl8::Sprite(new Tmpl8::Surface("assets/panelInset_blue.png"), 1);
 Item* Canvas::item = nullptr;
 
-UIText* Canvas::scoreText = nullptr;
 UIText* Canvas::startText = nullptr;
+UIText* Canvas::scoreText = nullptr;
 
 void Canvas::Init(Tmpl8::Surface* screenSurface)
 {
@@ -40,6 +40,7 @@ void Canvas::ShutDown()
 {
 	delete startText;
 	delete scoreText;
+	TTF_Quit();
 }
 
 void Canvas::Tick()
@@ -49,6 +50,9 @@ void Canvas::Tick()
 
 void Canvas::RenderSprites()
 {
+	// If canvas is in the last state, don't draw sprites
+	if (currentState >= 2) return;
+
 	itemBackground.DrawScaled(5, 5, 80, 80, screen);
 	// Item is set on the second frame, so this can't run on the first frame
 	if(item) item->Tick(0.f); // Item doesn't need deltaTime
@@ -57,7 +61,7 @@ void Canvas::RenderSprites()
 void Canvas::NextState()
 {
 	// Sanity check if next state exists
-	assert((currentState + 1) < 2);
+	assert((currentState + 1) <= 2);
 	currentState++;
 }
 

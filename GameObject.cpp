@@ -1,5 +1,4 @@
 #include "GameObject.h"
-#include <cstdio> //printf
 
 GameObject::GameObject(char* sprite, Tmpl8::Surface* screen)
 	:

@@ -40,21 +40,6 @@ void MapManager::Tick()
 	{
 		maps[i]->DrawMap();
 	}
-
-	// If player is high enough scroll the maps
-	int treshhold = 150;
-	if (player->transform.position.y < treshhold)
-	{
-		// Scroll the maps
-		AddPositionOffset(Vector2(0, -70));
-		player->CalculatePosition();
-
-		// If the current map is the last created map, create new ones
-		if (player->GetCurrentMap() == maps.back())
-		{
-			CreateNextMaps();
-		}
-	}
 }
 
 void MapManager::AddPositionOffset(Vector2 offset)
@@ -62,6 +47,18 @@ void MapManager::AddPositionOffset(Vector2 offset)
 	for (int i = 0; i <= maps.size() - 1; i++)
 	{
 		maps[i]->positionOffset += offset;
+	}
+}
+
+void MapManager::MoveMaps(float y)
+{
+	// Scroll the maps
+	AddPositionOffset(Vector2(0, y));
+
+	// If the current map is the last created map, create new ones
+	if (player->GetCurrentMap() == maps.back())
+	{
+		CreateNextMaps();
 	}
 }
 
@@ -116,7 +113,7 @@ void MapManager::DestroyPreviousMaps()
 	maps.erase(maps.begin());
 
 	// After erasing, we need to shrink the vector, so it's not going to get bigger and bigger
-	maps.shrink_to_fit(); 
+	maps.shrink_to_fit();
 
 	// Use this to debug
 	//printf("%zi\n", maps.capacity());

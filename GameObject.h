@@ -11,7 +11,7 @@ public:
 	virtual void Tick(float deltaTime);
 
 protected:
-	void RenderSprite();
+	virtual void RenderSprite();
 
 public:
 	Transform transform;
