@@ -22,7 +22,7 @@ namespace Tmpl8
 	void Game::Init()
 	{
 		mapManager = new MapManager(backgroundTiles, obstacleTiles, screen);
-		player = new Player("assets/p3_stand.png", items, mapManager->GetMap(1), screen);
+		player = new Player("assets/p3_stand.png", items, mapManager, screen);
 		mapManager->SetPlayer(player);
 		player->SetNextMap(mapManager->GetNextObstacleMap());
 	}
@@ -46,7 +46,6 @@ namespace Tmpl8
 		
 		mapManager->Tick();
 		player->Tick(deltaTime);
-		
 
 		screen->Line(player->transform.position.x + 35, player->transform.position.y + 35, mousePosition.x, mousePosition.y, 0xffffff);
 	}

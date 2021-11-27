@@ -49,7 +49,7 @@ void Map::DrawMap()
 
 void Map::GenerateMap()
 {
-	printf("\nGenerated map:\n");
+	//printf("\nGenerated map:\n");
 
 	// Seeding rand with time to get random numbers
 	srand(time(NULL));
@@ -62,9 +62,9 @@ void Map::GenerateMap()
 			// in the map, generate between 0 and the available number of tile sprites + 1
 			map[row][column] = rand() % (tiles.size() + shouldIncludeHoles);
 
-			printf("%d", map[row][column]);
+			//printf("%d", map[row][column]);
 		}
-		printf("\n");
+		//printf("\n");
 	}
 }
 

@@ -20,6 +20,7 @@ public:
 
 private:
 	void CreateNextMaps();
+	void DestroyPreviousMaps();
 
 private:
 	std::vector<Map*> maps;

@@ -1,20 +1,25 @@
 #include "Player.h"
 #include "Map.h"
+#include "MapManager.h"
 #include "MathUtils.h"
 #include "ItemManager.h"
 #include "Canvas.h"
 #include <cmath> // round / abs
-#include <cstdio> //printf
+#include <cstdio> // printf
 
-Player::Player(char* sprite, char* itemSprites[3], Map* startingMap, Tmpl8::Surface* screen)
+// TODO: GetTileIndexOfMap() to MapManager, get player mapmanager pointer, and refactor previousMap, currentMap and nextMap system that works with mapManager
+
+Player::Player(char* sprite, char* itemSprites[3], MapManager* mapManager, Tmpl8::Surface* screen)
 	: GameObject(sprite, screen),
+	mapManager(mapManager),
 	previousMap(nullptr),
-	currentMap(startingMap),
+	currentMap(mapManager->GetMap(1)),
 	nextMap(nullptr),
-	mapPosition(startingMap->FindHoleFromEnd(5, 3)),
+	mapPosition(mapManager->GetMap(1)->FindHoleFromEnd(5, 3)),
 	itemManager(new ItemManager(itemSprites, screen))
 {
 	transform.scale = Vector2(0.7, 0.7);
+	CalculatePosition();
 }
 
 Player::~Player()
@@ -70,14 +75,13 @@ void Player::UseItem(Vector2 mousePosition)
 	Map* map = GetMapBasedOnDir(dir);
 	int tileType = GetTileIndexOfMap(map, tilePosition);
 
-	printf("%i", tileType);
 	if (itemManager->UseItem(tileType))
 	{
 		map->ClearTile(tilePosition.x, tilePosition.y);
 	}
 }
 
-void Player::RecalculatePosition()
+void Player::CalculatePosition()
 {
 	transform.position = currentMap->GetTilePosition(mapPosition.x, mapPosition.y);
 }
@@ -99,7 +103,7 @@ bool Player::TransitionMapsUp()
 
 	previousMap = currentMap;
 	currentMap = nextMap;
-	nextMap = nullptr;
+	nextMap = mapManager->GetNextObstacleMap();
 
 	// Set current mapPosition relative to next map
 	nextPosition.y += 1;
@@ -158,4 +162,14 @@ int Player::GetTileIndexOfMap(Map* map, Vector2& position)
 	}
 
 	return currentMap->GetTileIndex((int)position.x, (int)position.y);
+}
+
+Map* Player::GetCurrentMap()
+{
+	return currentMap;
+}
+
+Map* Player::GetPreviousMap()
+{
+	return previousMap;
 }

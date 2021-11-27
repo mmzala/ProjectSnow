@@ -41,12 +41,19 @@ void MapManager::Tick()
 		maps[i]->DrawMap();
 	}
 
+	// If player is high enough scroll the maps
 	int treshhold = 150;
 	if (player->transform.position.y < treshhold)
 	{
 		// Scroll the maps
 		AddPositionOffset(Vector2(0, -70));
-		player->RecalculatePosition();
+		player->CalculatePosition();
+
+		// If the current map is the last created map, create new ones
+		if (player->GetCurrentMap() == maps.back())
+		{
+			CreateNextMaps();
+		}
 	}
 }
 
@@ -76,6 +83,7 @@ void MapManager::SetPlayer(Player* player)
 
 void MapManager::CreateNextMaps()
 {
+	// 70 is the width and height of the tile sprites
 	float posOff = maps.back()->positionOffset.y + (maps.back()->sizeY * 70);
 
 	Map* background;
@@ -90,5 +98,27 @@ void MapManager::CreateNextMaps()
 	if (player)
 	{
 		player->SetNextMap(obstacles);
+		DestroyPreviousMaps();
 	}
+
+	
+}
+
+void MapManager::DestroyPreviousMaps()
+{
+	// If player needs the first maps as his previous map, then return
+	if (player->GetPreviousMap() == maps[1]) return;
+
+	// Delete first 2 maps in the vector (background and obstacle maps)
+	delete maps[0];
+	delete maps[1];
+	maps.erase(maps.begin());
+	maps.erase(maps.begin());
+
+	// After erasing, we need to shrink the vector, so it's not going to get bigger and bigger
+	maps.shrink_to_fit(); 
+
+	// Use this to debug
+	//printf("%zi\n", maps.capacity());
+	//printf("%zi\n", maps.size());
 }
