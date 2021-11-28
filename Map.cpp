@@ -3,8 +3,6 @@
 #include <time.h> // time (for randomizing rand)
 #include <cstdio> //printf
 
-// TODO: Make row/column variables more understandable (x, y coordinates)
-
 Map::Map(std::vector<char*> spriteFiles, bool shouldIncludeHoles, float posOffsetY, Tmpl8::Surface* screen)
 	:
 	// Calculate positionOffset, so that the map fills the whole window equally (tiles are 70x70)
@@ -101,7 +99,7 @@ Vector2 Map::FindHoleFromEnd(Vector2 skipRows, Vector2 skipColumns)
 	if (shouldIncludeHoles)
 	{
 		Vector2 center(sizeX / 2, sizeY / 2);
-		map[(int)center.x][(int)center.y] = tiles.size();
+		map[(int)center.x][(int)center.y] = (int)tiles.size();
 		return center;
 	}
 

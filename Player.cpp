@@ -8,8 +8,6 @@
 #include <cmath> // round / abs
 #include <cstdio> // printf
 
-// TODO: GetTileIndexOfMap() to MapManager, get player mapmanager pointer, and refactor previousMap, currentMap and nextMap system that works with mapManager
-
 Player::Player(char* sprite, char* itemSprites[3], MapManager* mapManager, Magma* magma, Tmpl8::Surface* screen)
 	: GameObject(sprite, screen),
 	mapManager(mapManager),
@@ -145,7 +143,7 @@ bool Player::TransitionMapsUp()
 	nextPosition.y += 1;
 	mapPosition = nextPosition;
 
-	printf("trans next map\n");
+	//printf("trans next map\n");
 	return true;
 }
 
@@ -163,7 +161,7 @@ bool Player::TransitionMapsDown()
 	nextPosition.y -= 1;
 	mapPosition = nextPosition;
 
-	printf("trans previous map\n");
+	//printf("trans previous map\n");
 	return true;
 }
 
