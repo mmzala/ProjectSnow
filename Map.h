@@ -19,8 +19,7 @@ public:
 	void DrawMap();
 	Vector2 GetTilePosition(int row, int column);
 	int GetTileIndex(int row, int column);
-	Vector2 FindHoleFromEnd();
-	Vector2 FindHoleFromEnd(int skipRows, int skipColumns);
+	Vector2 FindHoleFromEnd(Vector2 skipRows, Vector2 skipColumns);
 	bool IsTileClear(Vector2 mapPosition);
 	void ClearTile(int row, int column);
 

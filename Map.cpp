@@ -7,13 +7,11 @@
 
 Map::Map(std::vector<char*> spriteFiles, bool shouldIncludeHoles, float posOffsetY, Tmpl8::Surface* screen)
 	:
-	positionOffset(0.f, posOffsetY),
+	// Calculate positionOffset, so that the map fills the whole window equally (tiles are 70x70)
+	positionOffset((float)(sizeX * 70 - screen->GetWidth()) / 2, posOffsetY),
 	shouldIncludeHoles(shouldIncludeHoles),
 	screen(screen)
 {
-	// Calculate positionOffset, so that the map fills the whole window (tiles are 70x70)
-
-
 	// Create all sprites and push it into the vector
 	tiles.reserve(spriteFiles.size());
 	for  (int i = 0; i < spriteFiles.size(); i++)
@@ -83,28 +81,28 @@ int Map::GetTileIndex(int row, int column)
 	return map[row][column];
 }
 
-// Finds closest hole in the map from the end and returns it's index in the map array or empty vector2 if nothing is found
-Vector2 Map::FindHoleFromEnd()
+/// <summary>
+/// Finds closest hole in the map from the end and returns it's position in the map array
+/// </summary>
+/// <param name="skipRows"> Specifies how many rows to skip from left and right </param>
+/// <param name="skipColumns"> Specifies how many columns to skip from left and right </param>
+/// <returns></returns>
+Vector2 Map::FindHoleFromEnd(Vector2 skipRows, Vector2 skipColumns)
 {
-	for (int column = sizeY - 1; column >= 0; column--)
+	for (int column = sizeY - (int)skipColumns.y - 1; column >= skipColumns.x; column--)
 	{
-		for (int row = sizeX - 1; row >= 0; row--)
+		for (int row = sizeX - (int)skipRows.y - 1; row >= skipRows.x; row--)
 		{
 			if (map[row][column] >= tiles.size()) return Vector2(row, column);
 		}
 	}
 
-	return Vector2();
-}
-
-Vector2 Map::FindHoleFromEnd(int skipRows, int skipColumns)
-{
-	for (int column = sizeY - 1 - skipColumns; column >= 0; column--)
+	// If the map should have holes, but none are found, just make a hole in the center and return that
+	if (shouldIncludeHoles)
 	{
-		for (int row = sizeX - 1 - skipRows; row >= 0; row--)
-		{
-			if (map[row][column] >= tiles.size()) return Vector2(row, column);
-		}
+		Vector2 center(sizeX / 2, sizeY / 2);
+		map[(int)center.x][(int)center.y] = tiles.size();
+		return center;
 	}
 
 	return Vector2();

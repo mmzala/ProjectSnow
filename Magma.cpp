@@ -6,7 +6,7 @@
 Magma::Magma(char* topSprite, char* middleSprite, Tmpl8::Surface* screen)
 	: GameObject(topSprite, screen),
 	middleSprite(new Tmpl8::Surface(middleSprite), 1),
-	speed(50)
+	speed(60)
 {
 	spritesOnXAxis = (int)(screen->GetWidth() / 70 + 1);
 	minPositionY = 0;

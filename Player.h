@@ -15,17 +15,14 @@ public:
 	void Move(Vector2 direction);
 	void UseItem(Vector2 mousePosition);
 	void SwapItem(int item);
-	void CalculatePosition();
 	void SetNextMap(Map* map);
 	Map* GetCurrentMap();
 	Map* GetPreviousMap();
 	bool IsDead();
 
-public:
-	// Position on map
-	Vector2 mapPosition;
-
 private:
+	void CalculatePosition();
+	bool CanMove(Vector2 direction);
 	bool TransitionMapsUp();
 	bool TransitionMapsDown();
 	void CheckForScrolling();
@@ -41,6 +38,9 @@ private:
 	Map* nextMap;
 	Magma* magma;
 
+	// Position on map
+	Vector2 mapPosition;
+	Vector2 positionOffset;
 	// Determines when to move the maps and magma
 	float scrollTreshhold;
 	bool isDead;

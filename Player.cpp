@@ -16,14 +16,16 @@ Player::Player(char* sprite, char* itemSprites[3], MapManager* mapManager, Magma
 	previousMap(nullptr),
 	currentMap(mapManager->GetMap(1)),
 	nextMap(nullptr),
-	mapPosition(mapManager->GetMap(1)->FindHoleFromEnd(5, 3)),
+	mapPosition(mapManager->GetMap(1)->FindHoleFromEnd(Vector2(4, 2), Vector2(2, 2))),
 	itemManager(new ItemManager(itemSprites, screen)),
 	magma(magma),
+	positionOffset(10, 5),
 	scrollTreshhold(150),
 	isDead(false),
 	points(0)
 {
 	transform.scale = Vector2(0.7f, 0.7f);
+	// Calculate starting position
 	CalculatePosition();
 }
 
@@ -52,28 +54,14 @@ void Player::Move(Vector2 direction)
 	// If Canvas is in starting state, then go to next state (this should only happen when player moves/uses item for the first time)
 	if (Canvas::GetCurrentState() < 1) Canvas::NextState();
 
-	// If standing at the top or bottom of currentMap, try to transition maps
-	if (mapPosition.y == 0 && direction.y == -1)
-	{
-		if (!TransitionMapsUp()) return;
-	}
-	else if (mapPosition.y == currentMap->sizeY - 1 && direction.y == 1)
-	{
-		if (!TransitionMapsDown()) return;
-	}
-	else
-	{
-		// Make sure the player can't move on full tiles (this is already done in transition methods)
-		if (!currentMap->IsTileClear(mapPosition + direction)) return;
-	}
-	
-	AddPoints((int) - direction.y);
+	if(!CanMove(direction)) return;
 	mapPosition += direction;
 	// Clip x coordinate to make sure player doesn't go out of the map
 	mapPosition.x = MathUtils::clip(mapPosition.x, 1.f, 10.f);
 
 	CheckForScrolling();
-	transform.position = currentMap->GetTilePosition((int)mapPosition.x, (int)mapPosition.y);
+	CalculatePosition();
+	AddPoints((int)-direction.y);
 }
 
 void Player::UseItem(Vector2 mousePosition)
@@ -106,11 +94,6 @@ void Player::UseItem(Vector2 mousePosition)
 	}
 }
 
-void Player::CalculatePosition()
-{
-	transform.position = currentMap->GetTilePosition((int)mapPosition.x, (int)mapPosition.y);
-}
-
 void Player::SwapItem(int item)
 {
 	itemManager->SwapItem(item);
@@ -121,6 +104,34 @@ void Player::SetNextMap(Map* map)
 	nextMap = map;
 }
 
+void Player::CalculatePosition()
+{
+	Vector2 tilePosition = currentMap->GetTilePosition((int)mapPosition.x, (int)mapPosition.y);
+	transform.position = tilePosition + positionOffset;
+}
+
+// Checks if the player can move to the next tile, returns false if not
+bool Player::CanMove(Vector2 direction)
+{
+	// If standing at the top or bottom of currentMap, try to transition maps
+	if (mapPosition.y == 0 && direction.y == -1) // Up
+	{
+		if (!TransitionMapsUp()) return false;
+	}
+	else if (mapPosition.y == currentMap->sizeY - 1 && direction.y == 1) // Down
+	{
+		if (!TransitionMapsDown()) return false;
+	}
+	else
+	{
+		// Make sure the player can't move on full tiles (this is already done in transition methods)
+		if (!currentMap->IsTileClear(mapPosition + direction)) return false;
+	}
+
+	return true;
+}
+
+// Returns false when can't transition
 bool Player::TransitionMapsUp()
 {
 	Vector2 nextPosition(mapPosition.x, (float)nextMap->sizeY - 1);
@@ -138,6 +149,7 @@ bool Player::TransitionMapsUp()
 	return true;
 }
 
+// Returns false when can't transition
 bool Player::TransitionMapsDown()
 {
 	Vector2 nextPosition(mapPosition.x, 0.f);
