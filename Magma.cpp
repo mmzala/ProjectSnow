@@ -10,8 +10,8 @@ Magma::Magma(char* topSprite, char* middleSprite, Tmpl8::Surface* screen)
 {
 	spritesOnXAxis = (int)(screen->GetWidth() / 70 + 1);
 	minPositionY = 0;
-	maxPositionY = screen->GetHeight() - 60;
-	transform.position = Vector2(50, maxPositionY);
+	maxPositionY = (float)(screen->GetHeight() - 60);
+	transform.position = Vector2(50.f, maxPositionY);
 }
 
 Magma::~Magma()
@@ -37,11 +37,11 @@ void Magma::RenderSprite()
 
 	for (int i = 0; i < spritesOnXAxis; i++)
 	{
-		sprite.Draw(screen, i * 70, transform.position.y);
+		sprite.Draw(screen, i * 70, (int)transform.position.y);
 
 		for (int j = 1; j < spritesOnYAxis; j++)
 		{
-			middleSprite.Draw(screen, i * 70, transform.position.y + (j * 70));
+			middleSprite.Draw(screen, i * 70, (int)transform.position.y + (j * 70));
 		}
 	}
 }

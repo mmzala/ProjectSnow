@@ -21,5 +21,5 @@ void GameObject::RenderSprite()
 	scale.x = transform.scale.x * sprite.GetWidth();
 	scale.y = transform.scale.y * sprite.GetHeight();
 
-	sprite.DrawScaled(transform.position.x, transform.position.y, scale.x, scale.y, screen);
+	sprite.DrawScaled((int)transform.position.x, (int)transform.position.y, (int)scale.x, (int)scale.y, screen);
 }

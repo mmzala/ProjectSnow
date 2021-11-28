@@ -10,8 +10,8 @@ public:
 
 	Vector2()
 		:
-		x(0),
-		y(0)
+		x(0.f),
+		y(0.f)
 	{}
 
 	Vector2(float x, float y)
@@ -20,9 +20,15 @@ public:
 		y(y)
 	{}
 
+	Vector2(int x, int y)
+		:
+		x((float)x),
+		y((float)y)
+	{}
+
 	float Magnitude()
 	{
-		return sqrt(this->x * this->x + this->y * this->y);
+		return sqrtf(this->x * this->x + this->y * this->y);
 	}
 
 	void Normalize()

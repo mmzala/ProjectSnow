@@ -9,8 +9,8 @@ UIText::UIText(Vector2 position, char* text, char* font, int fontSize, SDL_Color
 	color(color),
 	renderer(renderer)
 {
-	this->position.x = position.x;
-	this->position.y = position.y;
+	this->position.x = (int)position.x;
+	this->position.y = (int)position.y;
 	CreateText();
 }
 
@@ -44,6 +44,6 @@ void UIText::CreateText()
 
 void UIText::SetPosition(Vector2 position)
 {
-	this->position.x = position.x;
-	this->position.y = position.y;
+	this->position.x = (int)position.x;
+	this->position.y = (int)position.y;
 }

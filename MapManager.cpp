@@ -53,7 +53,7 @@ void MapManager::AddPositionOffset(Vector2 offset)
 void MapManager::MoveMaps(float y)
 {
 	// Scroll the maps
-	AddPositionOffset(Vector2(0, y));
+	AddPositionOffset(Vector2(0.f, y));
 
 	// If the current map is the last created map, create new ones
 	if (player->GetCurrentMap() == maps.back())

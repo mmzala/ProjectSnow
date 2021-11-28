@@ -23,7 +23,7 @@ Player::Player(char* sprite, char* itemSprites[3], MapManager* mapManager, Magma
 	isDead(false),
 	points(0)
 {
-	transform.scale = Vector2(0.7, 0.7);
+	transform.scale = Vector2(0.7f, 0.7f);
 	CalculatePosition();
 }
 
@@ -67,13 +67,13 @@ void Player::Move(Vector2 direction)
 		if (!currentMap->IsTileClear(mapPosition + direction)) return;
 	}
 	
-	AddPoints(-direction.y);
+	AddPoints((int) - direction.y);
 	mapPosition += direction;
 	// Clip x coordinate to make sure player doesn't go out of the map
 	mapPosition.x = MathUtils::clip(mapPosition.x, 1.f, 10.f);
 
 	CheckForScrolling();
-	transform.position = currentMap->GetTilePosition(mapPosition.x, mapPosition.y);
+	transform.position = currentMap->GetTilePosition((int)mapPosition.x, (int)mapPosition.y);
 }
 
 void Player::UseItem(Vector2 mousePosition)
@@ -101,14 +101,14 @@ void Player::UseItem(Vector2 mousePosition)
 		// If Canvas is in starting state, then go to next state (this should only happen when player moves/uses item for the first time)
 		if (Canvas::GetCurrentState() < 1) Canvas::NextState();
 
-		map->ClearTile(tilePosition.x, tilePosition.y);
+		map->ClearTile((int)tilePosition.x, (int)tilePosition.y);
 		AddPoints(tileType);
 	}
 }
 
 void Player::CalculatePosition()
 {
-	transform.position = currentMap->GetTilePosition(mapPosition.x, mapPosition.y);
+	transform.position = currentMap->GetTilePosition((int)mapPosition.x, (int)mapPosition.y);
 }
 
 void Player::SwapItem(int item)
@@ -123,7 +123,7 @@ void Player::SetNextMap(Map* map)
 
 bool Player::TransitionMapsUp()
 {
-	Vector2 nextPosition(mapPosition.x, nextMap->sizeY - 1);
+	Vector2 nextPosition(mapPosition.x, (float)nextMap->sizeY - 1);
 	if (!nextMap->IsTileClear(nextPosition)) return false;
 
 	previousMap = currentMap;
@@ -140,7 +140,7 @@ bool Player::TransitionMapsUp()
 
 bool Player::TransitionMapsDown()
 {
-	Vector2 nextPosition(mapPosition.x, 0);
+	Vector2 nextPosition(mapPosition.x, 0.f);
 	if (!previousMap->IsTileClear(nextPosition)) return false;
 
 	nextMap = currentMap;
@@ -157,7 +157,7 @@ bool Player::TransitionMapsDown()
 
 void Player::CheckForScrolling()
 {
-	Vector2 tilePosition = currentMap->GetTilePosition(mapPosition.x, mapPosition.y);
+	Vector2 tilePosition = currentMap->GetTilePosition((int)mapPosition.x, (int)mapPosition.y);
 	// If player is high enough scroll the maps and move the magma back
 	if (tilePosition.y < scrollTreshhold)
 	{
@@ -199,12 +199,12 @@ int Player::GetTileIndexOfMap(Map* map, Vector2& position)
 	// works assuming sizeof(int) == sizeof(ptr) on the target platform, that's not always the case
 	if (map == nextMap)
 	{
-		position = Vector2(position.x, nextMap->sizeY - 1);
+		position = Vector2(position.x, (float)nextMap->sizeY - 1);
 		return nextMap->GetTileIndex((int)position.x, (int)position.y);
 	}
 	else if (map == previousMap)
 	{
-		position = Vector2(position.x, 0);
+		position = Vector2(position.x, 0.f);
 		return previousMap->GetTileIndex((int)position.x, (int)position.y);
 	}
 

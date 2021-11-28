@@ -42,7 +42,7 @@ void Map::DrawMap()
 			// If there is no index available, that means the map should have holes, so skip to the next index 
 			if (map[row][column] > tiles.size() - 1) continue;
 
-			tiles[map[row][column]]->Draw(screen, row * 70 - positionOffset.x, column * 70 - positionOffset.y);
+			tiles[map[row][column]]->Draw(screen, row * 70 - (int)positionOffset.x, column * 70 - (int)positionOffset.y);
 		}
 	}
 }
@@ -52,7 +52,7 @@ void Map::GenerateMap()
 	//printf("\nGenerated map:\n");
 
 	// Seeding rand with time to get random numbers
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	for (int row = 0; row <= sizeX - 1; row++)
 	{
@@ -118,5 +118,5 @@ bool Map::IsTileClear(Vector2 mapPosition)
 
 void Map::ClearTile(int row, int column)
 {
-	map[row][column] = tiles.size();
+	map[row][column] = (int)tiles.size();
 }
