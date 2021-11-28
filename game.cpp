@@ -41,6 +41,16 @@ namespace Tmpl8
 	}
 
 	// -----------------------------------------------------------
+	// Resets application to starting state
+	// -----------------------------------------------------------
+	void Game::Reset()
+	{
+		Shutdown();
+		Init();
+		Canvas::Reset();
+	}
+
+	// -----------------------------------------------------------
 	// Main application tick function
 	// -----------------------------------------------------------
 	void Game::Tick(float deltaTime)
@@ -80,6 +90,11 @@ namespace Tmpl8
 		//printf("%i\n", key);
 		if (player->IsDead())
 		{
+			if (key == 44) // Spacebar
+			{
+				Reset();
+			}
+
 			return;
 		}
 

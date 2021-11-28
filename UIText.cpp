@@ -16,6 +16,7 @@ UIText::UIText(Vector2 position, char* text, char* font, int fontSize, SDL_Color
 
 UIText::~UIText()
 {
+	TTF_CloseFont(font);
 	SDL_DestroyTexture(texture);
 }
 

@@ -108,8 +108,8 @@ void MapManager::DestroyPreviousMaps()
 
 	// Delete first 2 maps in the vector (background and obstacle maps)
 	delete maps[0];
-	delete maps[1];
 	maps.erase(maps.begin());
+	delete maps[0];
 	maps.erase(maps.begin());
 
 	// After erasing, we need to shrink the vector, so it's not going to get bigger and bigger

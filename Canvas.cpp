@@ -1,6 +1,5 @@
 #include "Canvas.h"
 #include "UIText.h"
-#include "Vector.h"
 #include "Item.h"
 #include <SDL_ttf.h>
 #include <assert.h> // assert
@@ -9,16 +8,20 @@
 // Static variables can't be initialized in the class, so now it's here
 Canvas::State Canvas::states[3] = {};
 int Canvas::currentState = 0;
-Tmpl8::Surface* Canvas::screen = nullptr;
-SDL_Renderer* Canvas::renderer = nullptr;
 
 Tmpl8::Sprite Canvas::itemBackground = Tmpl8::Sprite(new Tmpl8::Surface("assets/panelInset_blue.png"), 1);
 Item* Canvas::item = nullptr;
 
 UIText* Canvas::hintText = nullptr;
 UIText* Canvas::scoreText = nullptr;
+// Position values are initialized in the init methods
+Canvas::TextValues Canvas::hintTextValues[2] = { { "To start the game just start moving..." }, { "You died D: To try again press the \"space\" key!" } };
+Canvas::TextValues Canvas::scoreTextValues[2] = { { "SCORE: 0" }, { "SCORE: " } };
 
-// TODO: center text? and refactor state transitions
+Tmpl8::Surface* Canvas::screen = nullptr;
+SDL_Renderer* Canvas::renderer = nullptr;
+
+// TODO: center text?
 
 void Canvas::Init(Tmpl8::Surface* screenSurface)
 {
@@ -34,7 +37,7 @@ void Canvas::Init(Tmpl8::Surface* screenSurface)
 		printf(TTF_GetError());
 	}
 
-	InithintText();
+	InitHintText();
 	InitScoreText();
 }
 
@@ -66,16 +69,14 @@ void Canvas::NextState()
 	assert((currentState + 1) <= 2);
 	currentState++;
 
-	// If transition is to the last state, show scoreand hint in the middle
-	if (currentState == 2)
-	{
-		Vector2 scorePos(screen->GetWidth() / 2 - 75, screen->GetHeight() / 2 - 50);
-		scoreText->SetPosition(scorePos);
+	TransitionState();
+}
 
-		Vector2 hintPos(screen->GetWidth() / 2 - 250, screen->GetHeight() / 2);
-		hintText->SetText("You died D: To try again press the \"space\" key!");
-		hintText->SetPosition(hintPos);
-	}
+// Sets the canvas to the start state
+void Canvas::Reset()
+{
+	currentState = 0;
+	TransitionState();
 }
 
 void Canvas::StartState()
@@ -95,28 +96,47 @@ void Canvas::EndState()
 	scoreText->Draw();
 }
 
-void Canvas::InithintText()
+// Handles state transitions
+void Canvas::TransitionState()
 {
-	Vector2 position;
-	position.x = 5;
-	position.y = screen->GetHeight() - 25;
+	switch (currentState)
+	{
+	case 0: // Start State
+		scoreText->SetText(scoreTextValues[0].text);
+		scoreText->SetPosition(scoreTextValues[0].position);
+		hintText->SetText(hintTextValues[0].text);
+		hintText->SetPosition(hintTextValues[0].position);
+		break;
+	case 2: // End State
+		// Show score and hint texts in the middle
+		
+		scoreText->SetPosition(scoreTextValues[1].position);
+		hintText->SetText(hintTextValues[1].text);
+		hintText->SetPosition(hintTextValues[1].position);
+		break;
+	}
+}
+
+void Canvas::InitHintText()
+{
+	hintTextValues[0].position = Vector2(5, screen->GetHeight() - 25);
+	hintTextValues[1].position = Vector2(screen->GetWidth() / 2 - 250, screen->GetHeight() / 2);
 	// Black
 	SDL_Color color = { 0, 0, 0, 255 };
 
 	// Renderer is set before init is called in template.cpp
-	hintText = new UIText(position, "To start the game just start moving...", "assets/KenneyPixel.ttf", 35, color, renderer);
+	hintText = new UIText(hintTextValues[0].position, hintTextValues[0].text, "assets/KenneyPixel.ttf", 35, color, renderer);
 }
 
 void Canvas::InitScoreText()
 {
-	Vector2 position;
-	position.x = 100;
-	position.y = 10;
+	scoreTextValues[0].position = Vector2(100, 10);
+	scoreTextValues[1].position = Vector2(screen->GetWidth() / 2 - 75, screen->GetHeight() / 2 - 50);
 	// Black
 	SDL_Color color = { 0, 0, 0, 255 };
 
 	// Renderer is set before init is called in template.cpp
-	scoreText = new UIText(position, "SCORE: 0", "assets/KenneyPixel.ttf", 50, color, renderer);
+	scoreText = new UIText(scoreTextValues[0].position, scoreTextValues[0].text, "assets/KenneyPixel.ttf", 50, color, renderer);
 }
 
 void Canvas::SetScoreText(int score)
