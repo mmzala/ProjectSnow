@@ -47,3 +47,8 @@ void UIText::SetPosition(Vector2 position)
 	this->position.x = (int)position.x;
 	this->position.y = (int)position.y;
 }
+
+Vector2 UIText::GetDimensions()
+{
+	return Vector2(position.w, position.h);
+}

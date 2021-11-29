@@ -24,7 +24,7 @@ namespace Tmpl8
 	void Game::Init()
 	{
 		mapManager = new MapManager(backgroundTiles, obstacleTiles, screen);
-		magma = new Magma("assets/liquidLavaTop_mid.png", "assets/liquidLava.png", screen);
+		magma = new Magma("assets/magma.png", "assets/liquidLava.png", screen);
 		player = new Player("assets/p3_stand.png", items, mapManager, magma, screen);
 		mapManager->SetPlayer(player);
 		player->SetNextMap(mapManager->GetNextObstacleMap());

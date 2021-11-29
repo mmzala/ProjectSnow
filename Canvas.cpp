@@ -109,10 +109,9 @@ void Canvas::TransitionState()
 		break;
 	case 2: // End State
 		// Show score and hint texts in the middle
-		
-		scoreText->SetPosition(scoreTextValues[1].position);
+		scoreText->SetPosition(Vector2((screen->GetWidth() - scoreText->GetDimensions().x) / 2, scoreTextValues[1].position.y));
 		hintText->SetText(hintTextValues[1].text);
-		hintText->SetPosition(hintTextValues[1].position);
+		hintText->SetPosition(Vector2((screen->GetWidth() - hintText->GetDimensions().x) / 2, hintTextValues[1].position.y));
 		break;
 	}
 }
@@ -120,7 +119,7 @@ void Canvas::TransitionState()
 void Canvas::InitHintText()
 {
 	hintTextValues[0].position = Vector2(5, screen->GetHeight() - 25);
-	hintTextValues[1].position = Vector2(screen->GetWidth() / 2 - 250, screen->GetHeight() / 2);
+	hintTextValues[1].position = Vector2(0, screen->GetHeight() / 2); // First value won't be used
 	// Black
 	SDL_Color color = { 0, 0, 0, 255 };
 
@@ -131,7 +130,7 @@ void Canvas::InitHintText()
 void Canvas::InitScoreText()
 {
 	scoreTextValues[0].position = Vector2(100, 10);
-	scoreTextValues[1].position = Vector2(screen->GetWidth() / 2 - 75, screen->GetHeight() / 2 - 50);
+	scoreTextValues[1].position = Vector2(0, screen->GetHeight() / 2 - 50); // First value won't be used
 	// Black
 	SDL_Color color = { 0, 0, 0, 255 };
 

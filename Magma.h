@@ -12,14 +12,18 @@ public:
 
 protected:
 	void RenderSprite() override;
+	void Animate(float deltaTimeSeconds);
 
 private:
-	Tmpl8::Sprite middleSprite;
+	Tmpl8::Sprite topSprite;
 	float speed;
 	// Determines how many sprites there are needed for the X axis
 	int spritesOnXAxis;
 	// Positions that the magma has to stay between
 	float minPositionY;
 	float maxPositionY;
+	//Animation variables
+	float animationFrame;
+	float animationSpeed;
 };
 

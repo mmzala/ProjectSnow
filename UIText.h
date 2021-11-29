@@ -12,6 +12,7 @@ public:
 	void SetText(char* text);
 	void CreateText();
 	void SetPosition(Vector2 position);
+	Vector2 GetDimensions();
 
 private:
 	TTF_Font* font;
