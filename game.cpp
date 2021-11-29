@@ -8,6 +8,12 @@
 #include <cstdio> // printf
 #include <vector> // vector array
 
+// This game uses:
+// SLD2 for all frame buffer interaction / https://www.libsdl.org/
+// SLD2_ttf for text rendering / https://www.libsdl.org/projects/SDL_ttf/
+// FreeImage to support popular graphics image formats / https://freeimage.sourceforge.io/
+// All credits regarding art can be found in the assets folder of this project
+
 // About the increasing process memory:
 // While playing the game, you can notice that the process memory increases. I first tought it was
 // a memory leak, but after some time debugging with <crtdbg.h> and memory usage snapshots, I didn't find
