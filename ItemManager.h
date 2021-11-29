@@ -1,8 +1,9 @@
 #pragma once
 
-#include "surface.h"
-
 class Item;
+namespace Tmpl8 {
+	class Surface;
+}
 class ItemManager
 {
 public:

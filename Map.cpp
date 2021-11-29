@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "surface.h"
 #include <stdlib.h> // rand
 #include <time.h> // time (for randomizing rand)
 #include <cstdio> //printf

@@ -1,16 +1,12 @@
 #pragma once
 
-#include "surface.h"
 #include "Vector.h"
 #include <vector>
 
-/* This does only work with pointers?
-// Forward decleration using namspaces
 namespace Tmpl8 {
 	class Surface;
 	class Sprite;
 }
-*/
 class Map
 {
 public:

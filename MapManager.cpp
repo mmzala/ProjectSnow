@@ -1,6 +1,7 @@
 #include "MapManager.h"
 #include "Map.h"
 #include "Player.h"
+#include "surface.h"
 #include <algorithm> // copy
 #include <cstdio> //printf
 

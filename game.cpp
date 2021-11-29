@@ -5,7 +5,7 @@
 #include "Player.h"
 #include "Magma.h"
 #include "Canvas.h"
-#include <cstdio> //printf
+#include <cstdio> // printf
 #include <vector> // vector array
 
 // About the increasing process memory:
@@ -23,10 +23,6 @@ namespace Tmpl8
 	std::vector<char*> backgroundTiles = { "assets/castleCenter.png" };
 	std::vector<char*> obstacleTiles = { "assets/stoneCenter.png", "assets/iceWaterDeep.png", "assets/tundraCenter.png" };
 	char* items[3] = { "assets/Pickaxe.png", "assets/Axe.png", "assets/Shovel.png" };
-
-	Player* player;
-	MapManager* mapManager;
-	Magma* magma;
 
 	// -----------------------------------------------------------
 	// Initialize the application
@@ -75,7 +71,7 @@ namespace Tmpl8
 		//screen->Line(player->transform.position.x + 35, player->transform.position.y + 35, mousePosition.x, mousePosition.y, 0xffffff);
 	}
 
-	void Game::MouseDown(int button)
+	void Game::MouseDown(int button, int mousePosX, int mousePosY)
 	{
 		//printf("%i\n", button);
 		if (player->IsDead()) return;
@@ -83,16 +79,11 @@ namespace Tmpl8
 		switch (button)
 		{
 		case 1: // left button
-			player->UseItem(mousePosition);
+			player->UseItem(Vector2(mousePosX, mousePosY));
 			break;
 		case 3: // right button
 			break;
 		}
-	}
-
-	void Game::MouseMove(int x, int y)
-	{
-		mousePosition = Vector2(x, y);
 	}
 
 	void Game::KeyDown(int key)

@@ -2,6 +2,7 @@
 #include "Item.h"
 #include "Player.h"
 #include "Canvas.h"
+#include "surface.h"
 #include <assert.h> // assert
 
 ItemManager::ItemManager(char* sprites[3], Tmpl8::Surface* screen)
@@ -35,5 +36,6 @@ void ItemManager::SwapItem(int item)
 	// There are only 3 items
 	assert(item <= 3);
 	holdingItem = item;
+	// If there is a warning here, don't worry, it works
 	Canvas::SetItem(items[holdingItem]);
 }

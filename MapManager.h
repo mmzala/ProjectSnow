@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Vector.h"
-#include "surface.h"
 #include <vector>
 
 class Map;
-class Surface;
 class Player;
+namespace Tmpl8 {
+	class Surface;
+}
 class MapManager
 {
 public:

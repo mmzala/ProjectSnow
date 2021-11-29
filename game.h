@@ -2,6 +2,9 @@
 
 #include "Vector.h"
 
+class MapManager;
+class Magma;
+class Player;
 namespace Tmpl8 {
 
 class Surface;
@@ -14,14 +17,17 @@ public:
 	void Reset();
 	void Tick( float deltaTime );
 	void MouseUp( int button ) { /* implement if you want to detect mouse button presses */ }
-	void MouseDown(int button);
-	void MouseMove(int x, int y);
+	void MouseDown(int button, int mousePosX, int mousePosY);
+	void MouseMove(int x, int y) { /* implement if you want to handle keys */ };
 	void KeyUp( int key ) { /* implement if you want to handle keys */ }
 	void KeyDown(int key);
 
 private:
 	Surface* screen;
-	Vector2 mousePosition;
+
+	Player* player;
+	MapManager* mapManager;
+	Magma* magma;
 };
 
 }; // namespace Tmpl8

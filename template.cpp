@@ -394,14 +394,13 @@ int main( int argc, char **argv )
 				game->KeyUp( event.key.keysym.scancode );
 				break;
 			case SDL_MOUSEMOTION:
-				// Changed relative motion to position (xrel, yrel) - Marcin Zalewski
-				game->MouseMove( event.motion.x, event.motion.y );
+				game->MouseMove( event.motion.xrel, event.motion.yrel );
 				break;
 			case SDL_MOUSEBUTTONUP:
 				game->MouseUp( event.button.button );
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				game->MouseDown( event.button.button );
+				game->MouseDown( event.button.button, event.motion.x, event.motion.y );
 				break;
 			default:
 				break;
