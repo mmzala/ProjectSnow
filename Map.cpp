@@ -44,42 +44,6 @@ void Map::DrawMap()
 	}
 }
 
-void Map::GenerateMap()
-{
-	//printf("\nGenerated map:\n");
-
-	// Seeding rand with time to get random numbers
-	srand((unsigned int)time(NULL));
-
-	for (int row = 0; row <= sizeX - 1; row++)
-	{
-		for (int column = 0; column <= sizeY - 1; column++)
-		{
-			// Generate random index between 0 and the available number of tile sprites, if there should be sholes
-			// in the map, generate between 0 and the available number of tile sprites + 1
-			map[row][column] = rand() % (tiles.size() + shouldIncludeHoles);
-
-			//printf("%d", map[row][column]);
-		}
-		//printf("\n");
-	}
-}
-
-Vector2 Map::GetTilePosition(int row, int column)
-{
-	Vector2 position = Vector2();
-	position.x = row * 70 - positionOffset.x;
-	position.y = column * 70 - positionOffset.y;
-
-	return position;
-}
-
-// Returns what sort of tile it is
-int Map::GetTileIndex(int row, int column)
-{
-	return map[row][column];
-}
-
 /// <summary>
 /// Finds closest hole in the map from the end and returns it's position in the map array
 /// </summary>
@@ -107,6 +71,21 @@ Vector2 Map::FindHoleFromEnd(Vector2 skipRows, Vector2 skipColumns)
 	return Vector2();
 }
 
+Vector2 Map::GetTilePosition(int row, int column)
+{
+	Vector2 position = Vector2();
+	position.x = row * 70 - positionOffset.x;
+	position.y = column * 70 - positionOffset.y;
+
+	return position;
+}
+
+// Returns what sort of tile it is
+int Map::GetTileIndex(int row, int column)
+{
+	return map[row][column];
+}
+
 // Returns true when tile is empty (doesn't have any sprite)
 bool Map::IsTileClear(Vector2 mapPosition)
 {
@@ -116,4 +95,25 @@ bool Map::IsTileClear(Vector2 mapPosition)
 void Map::ClearTile(int row, int column)
 {
 	map[row][column] = (int)tiles.size();
+}
+
+void Map::GenerateMap()
+{
+	//printf("\nGenerated map:\n");
+
+	// Seeding rand with time to get random numbers
+	srand((unsigned int)time(NULL));
+
+	for (int row = 0; row <= sizeX - 1; row++)
+	{
+		for (int column = 0; column <= sizeY - 1; column++)
+		{
+			// Generate random index between 0 and the available number of tile sprites, if there should be sholes
+			// in the map, generate between 0 and the available number of tile sprites + 1
+			map[row][column] = rand() % (tiles.size() + shouldIncludeHoles);
+
+			//printf("%d", map[row][column]);
+		}
+		//printf("\n");
+	}
 }

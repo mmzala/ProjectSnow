@@ -25,12 +25,6 @@ void UIText::Draw()
 	SDL_RenderCopy(renderer, texture, nullptr, &position);
 }
 
-void UIText::SetText(char* text)
-{
-	this->text = text;
-	CreateText();
-}
-
 void UIText::CreateText()
 {
 	// Make sure the old texture is cleaned up
@@ -40,6 +34,12 @@ void UIText::CreateText()
 	texture = SDL_CreateTextureFromSurface(renderer, surface);
 	SDL_FreeSurface(surface);
 	SDL_QueryTexture(texture, nullptr, nullptr, &this->position.w, &this->position.h);
+}
+
+void UIText::SetText(char* text)
+{
+	this->text = text;
+	CreateText();
 }
 
 void UIText::SetPosition(Vector2 position)

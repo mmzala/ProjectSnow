@@ -9,8 +9,8 @@ public:
 	UIText(Vector2 position, char* text, char* font, int fontSize, SDL_Color color, SDL_Renderer* renderer);
 	~UIText();
 	void Draw();
-	void SetText(char* text);
 	void CreateText();
+	void SetText(char* text);
 	void SetPosition(Vector2 position);
 	Vector2 GetDimensions();
 

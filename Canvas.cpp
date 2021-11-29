@@ -79,6 +79,28 @@ void Canvas::Reset()
 	TransitionState();
 }
 
+void Canvas::SetScoreText(int score)
+{
+	char text[32];
+	snprintf(text, sizeof(text), "SCORE: %d", score);
+	scoreText->SetText(text);
+}
+
+int Canvas::GetCurrentState()
+{
+	return currentState;
+}
+
+void Canvas::SetRenderer(SDL_Renderer* newRenderer)
+{
+	renderer = newRenderer;
+}
+
+void Canvas::SetItem(Item* newItem)
+{
+	item = newItem;
+}
+
 void Canvas::StartState()
 {
 	hintText->Draw();
@@ -108,7 +130,7 @@ void Canvas::TransitionState()
 		hintText->SetPosition(hintTextValues[0].position);
 		break;
 	case 2: // End State
-		// Show score and hint texts in the middle
+		// Show score and hint texts in the middle of the screen
 		scoreText->SetPosition(Vector2((screen->GetWidth() - scoreText->GetDimensions().x) / 2, scoreTextValues[1].position.y));
 		hintText->SetText(hintTextValues[1].text);
 		hintText->SetPosition(Vector2((screen->GetWidth() - hintText->GetDimensions().x) / 2, hintTextValues[1].position.y));
@@ -136,26 +158,4 @@ void Canvas::InitScoreText()
 
 	// Renderer is set before init is called in template.cpp
 	scoreText = new UIText(scoreTextValues[0].position, scoreTextValues[0].text, "assets/KenneyPixel.ttf", 50, color, renderer);
-}
-
-void Canvas::SetScoreText(int score)
-{
-	char text[32];
-	snprintf(text, sizeof(text), "SCORE: %d", score);
-	scoreText->SetText(text);
-}
-
-int Canvas::GetCurrentState()
-{
-	return currentState;
-}
-
-void Canvas::SetRenderer(SDL_Renderer* newRenderer)
-{
-	renderer = newRenderer;
-}
-
-void Canvas::SetItem(Item* newItem)
-{
-	item = newItem;
 }

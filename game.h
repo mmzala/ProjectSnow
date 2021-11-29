@@ -24,7 +24,6 @@ public:
 
 private:
 	Surface* screen;
-
 	Player* player;
 	MapManager* mapManager;
 	Magma* magma;

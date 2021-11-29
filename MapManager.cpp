@@ -43,14 +43,6 @@ void MapManager::Tick()
 	}
 }
 
-void MapManager::AddPositionOffset(Vector2 offset)
-{
-	for (int i = 0; i <= maps.size() - 1; i++)
-	{
-		maps[i]->positionOffset += offset;
-	}
-}
-
 void MapManager::MoveMaps(float y)
 {
 	// Scroll the maps
@@ -60,6 +52,14 @@ void MapManager::MoveMaps(float y)
 	if (player->GetCurrentMap() == maps.back())
 	{
 		CreateNextMaps();
+	}
+}
+
+void MapManager::AddPositionOffset(Vector2 offset)
+{
+	for (int i = 0; i <= maps.size() - 1; i++)
+	{
+		maps[i]->positionOffset += offset;
 	}
 }
 
@@ -116,7 +116,7 @@ void MapManager::DestroyPreviousMaps()
 	// After erasing, we need to shrink the vector, so it's not going to get bigger and bigger
 	maps.shrink_to_fit();
 
-	// Use this to debug
+	// Use this to debugging
 	//printf("%zi\n", maps.capacity());
 	//printf("%zi\n", maps.size());
 }
