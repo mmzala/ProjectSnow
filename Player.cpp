@@ -103,6 +103,21 @@ void Player::SetNextMap(Map* map)
 	nextMap = map;
 }
 
+Map* Player::GetCurrentMap()
+{
+	return currentMap;
+}
+
+Map* Player::GetPreviousMap()
+{
+	return previousMap;
+}
+
+bool Player::IsDead()
+{
+	return isDead;
+}
+
 void Player::CalculatePosition()
 {
 	Vector2 tilePosition = currentMap->GetTilePosition((int)mapPosition.x, (int)mapPosition.y);
@@ -184,6 +199,8 @@ void Player::AddPoints(int amount)
 
 	points += amount;
 	Canvas::SetScoreText(points);
+	// The more points the player has, the faster the magma gets
+	magma->SetSpeed((float)points / 4);
 }
 
 // Returns map based on given direction and mapPosition
@@ -220,19 +237,4 @@ int Player::GetTileIndexOfMap(Map* map, Vector2& position)
 	}
 
 	return currentMap->GetTileIndex((int)position.x, (int)position.y);
-}
-
-Map* Player::GetCurrentMap()
-{
-	return currentMap;
-}
-
-Map* Player::GetPreviousMap()
-{
-	return previousMap;
-}
-
-bool Player::IsDead()
-{
-	return isDead;
 }

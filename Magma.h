@@ -9,6 +9,7 @@ public:
 	~Magma();
 	void Tick(float deltaTime) override;
 	void MoveDown(float amount);
+	void SetSpeed(float speed);
 
 protected:
 	void RenderSprite() override;
@@ -16,7 +17,9 @@ protected:
 
 private:
 	Tmpl8::Sprite topSprite;
-	float speed;
+	float minSpeed;
+	float maxSpeed;
+	float currentSpeed;
 	// Determines how many sprites there are needed for the X axis
 	int spritesOnXAxis;
 	// Positions that the magma has to stay between
