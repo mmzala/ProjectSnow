@@ -8,6 +8,16 @@
 #include <cstdio> //printf
 #include <vector> // vector array
 
+// About the increasing process memory:
+// While playing the game, you can notice that the process memory increases. I first tought it was
+// a memory leak, but after some time debugging with <crtdbg.h> and memory usage snapshots, I didn't find
+// anything that could imply that there is one. <crtdbg.h> says there are no memory leaks and the snapshots
+// say that the object count that allocate memory does not increase. So there can be a memory leak but
+// I am not quite sure myself, maybe I am incorrectly deleting maps from the vector and visual studio is fooling itself.
+// It could also be fragmentation (https://en.wikipedia.org/wiki/Fragmentation_(computing))
+// , because I am allocating and deallocating chunks of memory often, while the player climbs to the top.
+// Anyway, you can play the game normally, and it won't crash that fast because of that problem (at least it never crashed for me).
+
 namespace Tmpl8
 {
 	std::vector<char*> backgroundTiles = { "assets/castleCenter.png" };
